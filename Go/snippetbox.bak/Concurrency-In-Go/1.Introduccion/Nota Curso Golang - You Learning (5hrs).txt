@@ -1,0 +1,68 @@
+Introduccion
+
+Concurrencia: La concurrencia trata sobre multiples cosas ocurriendo al mismo tiempo en un orden aleatorio.
+
+La concurrencia trata de dividir el problema en multiples calculos independientes, que pueden o no ejecutarse en paralelo.
+
+El paralelismo es la habilidad de ejecutar multiples calculos de forma simultanea.
+
+La concurrencia habilita el paralelismo, los procesos que son independientes de cada uno, puede ejecutarse de forma paralela y tomar ventaja de los multiples core en nuestro procesador para ejecutarse mas rapido. 
+Si una tarea, depende de otra, entonces necesitan de ser ejecutadas de forma secuencial.
+Entonces, tener muchos cpu cores, no siempre hace las cosas mas rapido excepto que las tareas esten diseñadas para trabajar de forma independiente.
+
+
+Porque hay una necesidad de construir concurrencia primitiva en Go?
+Para entender esto, necesitamos entender los conceptos de OS (sistema operativo), procesos y hilos (threads)
+
+
+OS
+La idea de la concurrencia viene del sistema operativo. El trabajo del sistema operativo es darle una
+una chance justa a todos los procesos que se estan ejecutando (darles acceso al cpu, memoria y otros recursos).
+La mayor parte del tiempo, da las mismas oportunidades a todos los procesos. 
+Y hay ocasiones en donde la tarea de mayor prioridad puede tener prioridad.
+
+
+Process
+Un proceso es una instancia de un programa en ejecucion.
+Los procesos proveen de un ambiente para que el proceso se ejecute.
+Cuando el programa es ejecutado, el sistema operativo crea un proceso y asigna memoria en la direccion de memoria virtual.
+La memoria virtual contendra: 
+- Segmento de codigo: codigo de maquina compilado.
+- Data region: variables globales
+- Heap segment: es el unico que usa asignacion de memoria dinamica.
+- Stack: se usa para almacenar variables locales de una funcion.
+
+
+Threads (Hilos)
+Son la unidad mas pequeña de ejecucion que la CPU acepta.
+Cada proceso tiene por lo menos un thread, que es el hilo principal (main thread).
+Un proceso puede contener multiples threads.
+Y los threads comparten el mismo espacio de direccion.
+Y cada thread, tiene su propio stack
+Los threads pueden ejecutarse independientemente, unos de otros.
+El sistema operativo toma decisiones de programación a nivel de threads, no a nivel de proceso.
+Los threads pueden ejecutarse simultaneamente o en paralelo con cada thread ejecutandose al mismo tiempo en diferentes nucleos (cores).
+
+    Estado de los threads
+    Runnable: Cuando el proceso es creado, el hilo principal (main thread) se pone en la cola de listos.
+    Executing: Cuando la CPU esta disponible, el hilo empieza a ejecutar y a cada thread se le da una porcion de tiempo. 
+    Preempted: Si la porcion de tiempo expira, entonces, el thread se adelanta (preempted) y se coloca de nuevo en la cola.
+    Waiting: Si el thread se bloquea debido a a una operacion i/o (in/out - entrada/salida) como por ejemplo read/write (leer/escribir) en disco o operacion de red o esperando 
+    el evento de otro proceso, entonces es puesto en la cola de espera hasta que la operacion i/o se complete. Una vez que este completa
+    es puesta de vuelta en la cola de listos.
+    
+
+    Podemos dividir nuestra aplicacion en procesos y hilos y lograr concurrencia?
+    Si, podemos, pero hay limitaciones:
+    - cambios de contexto (context switching): son caros, ya que la cpu tiene que gastar tiempo copiando el contexto del hilo concurrente en ejecucion a la memoria y restaurar el contexto del siguiente hilo.
+    y toma cientos de intrucciones de CPU hacer un cambio de contexto. Es una perdida de tiempo ya que la CPU no esta ejecutando nuestra aplicacion
+    sino que esta haciendo un cambio de contexto.
+
+        Podemos escalar el numero de hilos por proceso?
+        No mucho, ya que si escalamos demasiado el numero de hilos de un proceso, nos encontraremos con el problema "C10K".       
+        Para hacer un trabajo significativo, un thread necesita de al menos 2ms.
+
+        Tambien, podemos encontrarnos con el problema del "Fixed Stack Size" (tamaño de pila fijo), el sistema operativo proporciona una pila de tamaño fijo para cada hilo.
+        El tamaño actual, depende de nuetro hardware (en mi maquina el stack size es de 8gb, ejecutar el comando: ulimit -a, para ver los resultados).
+        Entonces, si tengo 8gb de memoria, en teoria, puedo crear unicamente 1000 threads. 
+        Entonces el stack sized, limita el numero de threads que podemos crear a la cantidad de memoria que tenemos.

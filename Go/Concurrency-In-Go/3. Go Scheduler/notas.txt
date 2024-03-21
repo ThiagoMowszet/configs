@@ -1,0 +1,25 @@
+Go Scheduler (planificador)
+
+- El Go scheduler es parte del runtime de go, es conocido como M:N Scheduler.
+M:N se refiere a la relación entre los subprocesos del sistema operativo (M) y los goroutines de Go (N).
+    M representa el número de subprocesos del sistema operativo.
+    N representa el número de goroutines de Go.
+Esta relación M:N significa que el scheduler de Go es capaz de manejar múltiples goroutines (N) en un número relativamente menor de subprocesos del sistema operativo (M). El scheduler asigna y programa goroutines en un conjunto más pequeño de subprocesos del sistema operativo, lo que permite una ejecución eficiente y escalable de goroutines en sistemas con recursos limitados.
+
+
+- El GO scheduler corre en el espacio de usuario.
+
+- El Go scheduler usa el sistema operativo para planificar las gorutinas para su ejecucion.
+
+- Se podrían programar N gorutinas en subprocesos de M OS que se ejecutan en un máximo de procesadores (GOMAXPROCS - variable global en Go).
+
+- En la version 1.14, el go scheduler implemento asynchronous preemption (preferencia asincrona), en donde cada goroutine se le da una porcion de tiempo de 10ms.
+
+
+Resumen :
+
+- M = Representa los threads (hilos) del OS (sistema operativo).
+- P = Es el procesador logico, que maneja la planificacion de las goroutines.
+- G = Es la goroutine, que tambien incluye informacion de la planificacion como el stack y los punteros de intruccion.
+- Local run queue (cola de ejecucion local) = Donde las goroutines ejecutables son organizadas.
+- Global run queue (cola de ejecucion global) = Cuando una goroutine es creada, son puestas en la cola de ejecucion global.

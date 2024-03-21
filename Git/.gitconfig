@@ -1,0 +1,20 @@
+[user]
+	name = Thiago
+	email = thiagomowszet@gmail.com
+[alias]
+    ii = init
+    aa = add
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	ps = push
+    cl = clone
+    pl = pull
+    sw = switch
+    mm = remote
+    df = diff
+[credential]
+	helper = store
+[http]
+	cookiefile = /home/thiago/.gitcookies

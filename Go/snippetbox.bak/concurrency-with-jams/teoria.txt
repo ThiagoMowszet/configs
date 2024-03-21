@@ -1,0 +1,32 @@
+Que es la concurrencia?
+- Es un proceso que ocurre de forma simultanea con uno o mas procesos.
+- Tambien puede implicar a que todos estos procesos estan progresando al mismo tiempo.
+
+
+Que son las condiciones de carrera (race conditions)?
+- Una condicion de carrera es cuando ocurre un error en una o mas operaciones que deben de ejecutarse en el orden correcto,
+pero el programa no ha sido escrito de manera que se garantice que este orden sea mantenido.
+
+
+Atomicidad
+Se considera que algo es atomico cuando en el contexto en el que se esta operando es indivisible o ininterrumpible.
+
+
+Acceso a la memoria sincronizada
+-
+
+
+Deadlocks
+Un programa deadlock es uno en el cual todos los procesos concurrentes estan esperandose unos a los otros.
+En este estado, el programa nunca se podra recuperar sin intervencion externa.
+
+
+Livelocks
+Son programas que realizan activamente operaciones concurrentes, pero estas operaciones no hacen nada para avanzar el estado del programa.
+
+
+Starvation
+Es un situacion donde un proceso concurrente no puede acceder a todos los recursos para realizar su trabajo de forma correcta.
+
+
+

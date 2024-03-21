@@ -1,0 +1,9 @@
+Defer 
+Zero values y formatting verbs
+Variadic functions
+Receiver functions
+Anonymous functions
+channels
+contexts
+runas
+byte
